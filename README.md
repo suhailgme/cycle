@@ -1,2 +1,2 @@
 # cycle
-A memory game
+A memory game made in javascript
