@@ -5,11 +5,11 @@ p {
     font-weight: 300;
 }
 body {
-    background-color: #000;
+    background-color: #12192d;
 }
 .game-text {
     position: relative;
-    left: 5px;
+    left: 6px;
     top: 50px;
 }
 .subtext {
@@ -28,7 +28,7 @@ body {
     position: absolute;
     border: 5px solid white;
 }
-.circle:hover {
+.small:hover {
     border: 5px solid white;
 }
 .circle.big {
@@ -42,35 +42,35 @@ body {
 .one {
     left: -45px;
     top: -15px;
-    border-color: #e57f44;
+    border-color: #e57f44 !important;
 }
 .two {
     top: -70px;
     left: 50px;
-    border-color: #00CAFC;
+    border-color: #00CAFC !important;
 }
 .three {
     right: -55px;
     top: -15px;
-    border-color: #53EBA5;
+    border-color: #53EBA5 !important;
 }
 .four {
     left: -45px;
     bottom: -15px;
-    border-color: #CDC45F;
+    border-color: #CDC45F !important;
 }
 .five {
     bottom: -70px;
     left: 50px;
-    border-color: #EC4FA9;
+    border-color: #EC4FA9 !important;
 }
 .six {
     right: -55px;
     bottom: -15px;
-    border-color: #bf3d3d;
+    border-color: #bf3d3d !important;
 }
 button {
-    margin-top: 250px;
+    margin-top: 230px;
     margin-left: 10px;
     color: #FFF;
     background-color: transparent;
@@ -88,6 +88,11 @@ button {
 button:hover {
     border-color: #53EBA5
 }
+.glyphicon {
+    padding-top: 10px;
+    padding-right: 15px;
+    color: #FFF;
+}
 .level {
-    padding-top: 20px;
+    padding-left: 1em;
 }
