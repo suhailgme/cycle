@@ -20,12 +20,20 @@
 
 <body>
 
-    <div class="container text-center">
+    <div class="container-fluid text-center">
 
-        <div class="row text-right">
-            <a href="#"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+        <div class="dropdown text-right"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span></a>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                <li class="settingsItem"><a href="#">Strict Mode<span class="glyphicon glyphicon-ok"></span></a>
+                </li>
+                <hr>
+                <li class="settingsItem"><a href="#">Sound<span></span></a>
+                </li>
+                <hr>
+                <li class="settingsItem"><a href="#">Restart<span></span></a>
+                </li>
+            </ul>
         </div>
-
         <p class="level">Cycle the Memory Game </p>
         <div id=" big-circle " class="circle big ">
             <p class="game-text ">Welcome</p>

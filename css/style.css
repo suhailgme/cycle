@@ -7,6 +7,16 @@ p {
 body {
     background-color: #12192d;
 }
+.navbar {
+    background-color: #12192d;
+    border: none;
+}
+.navbar-header {
+    float: left;
+    padding-right: 25px;
+    text-align: center;
+    width: 100%;
+}
 .game-text {
     position: relative;
     left: 6px;
@@ -26,9 +36,6 @@ body {
     background-color: transparent;
     display: inline-block;
     position: absolute;
-    border: 5px solid white;
-}
-.small:hover {
     border: 5px solid white;
 }
 .circle.big {
@@ -89,10 +96,20 @@ button:hover {
     border-color: #53EBA5
 }
 .glyphicon {
+    padding-right: 5px;
     padding-top: 10px;
-    padding-right: 15px;
     color: #FFF;
+}
+.glyphicon-cog:hover {
+    color: #53EBA5;
 }
 .level {
     padding-left: 1em;
+}
+.glyphicon-ok {
+    color: #000;
+    padding-left: 2em;
+}
+hr {
+    margin: 0;
 }

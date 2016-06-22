@@ -8,17 +8,22 @@ var cycle = {
         "six"
     ],
     sequence: [],
+    winMessage: ["Well done.", "Awesome.", "Nicely done.", "Great job."],
+    loseMessage: ["Oops!", "Sorry!", "Not quite!"],
     level: 1,
     countDown: [3, 2, 1],
     userTaps: 0,
     playing: false,
+    strictMode: true,
+    animating: false,
+    maxLevels: 20
 };
 
-function getTaps() {
-    return cycle.sequence.length;
-}
+
 
 function start() {
+    cycle.animating = true;
+
     var i = 0;
     $(".game-text,.subtext,.start").hide();
     var interval = setInterval(function() {
@@ -32,7 +37,7 @@ function start() {
 }
 
 function updateLevel() {
-    $(".level").text("Level " + cycle.level + " of 20.");
+    $(".level").text("Level " + cycle.level + " of " + cycle.maxLevels + ".");
 }
 
 function setSequence(n) {
@@ -40,17 +45,17 @@ function setSequence(n) {
         e = cycle.circles[Math.floor(Math.random() * cycle.circles.length)];
         cycle.sequence.push(e);
     }
-    console.log(cycle.sequence);
 }
 
 function highlightButton(button) {
     bgColor = button.css("border-color");
-    button.stop(true, true).effect("highlight", {
+    button.effect("highlight", {
         color: bgColor
     }, 900);
 }
 
 function animate() {
+    cycle.animating = true;
     var i = 0;
     var interval = setInterval(function() {
         button = $("." + cycle.sequence[i]);
@@ -58,23 +63,24 @@ function animate() {
         i++;
         if (i >= cycle.sequence.length) {
             clearInterval(interval);
-            $(".game-text").text(getTaps() + " Taps").delay(900).fadeIn(400);
+            $(".game-text").text(getTaps()).delay(900).fadeIn(400);
             $(".subtext").text("Repeat after me...").delay(1200).fadeIn(400);
+            cycle.animating = false;
             cycle.playing = true;
-
         }
     }, 1000);
 }
 
 function buttonHandler(buttonText) {
-    console.log(buttonText);
     if (buttonText === "Start" || buttonText === "Restart") {
         cycle.sequence = [];
         cycle.level = 1;
         cycle.userTaps = 0;
-
         updateLevel();
         setSequence(1);
+        start();
+    } else if (buttonText === "Retry") {
+        cycle.userTaps = 0;
         start();
     } else {
         cycle.userTaps = 0;
@@ -83,6 +89,16 @@ function buttonHandler(buttonText) {
         $(".game-text,.subtext,.start").hide();
         animate();
     }
+}
+
+function getTaps() {
+    var taps = "";
+    if (cycle.sequence.length - cycle.userTaps == 1) {
+        taps = " Tap.";
+    } else {
+        taps = " Taps.";
+    }
+    return cycle.sequence.length - cycle.userTaps + taps;
 
 }
 
@@ -90,13 +106,12 @@ function checkCorrect(smallButton) {
     if ($(smallButton).hasClass(cycle.sequence[cycle.userTaps])) {
         cycle.userTaps++;
         if (cycle.userTaps === cycle.sequence.length) {
-            cycle.level++;
             cycle.userTaps = 0;
             cycle.taps--;
             correctSequence();
             return false;
         }
-        $(".game-text").text(getTaps() - cycle.userTaps + " Taps");
+        $(".game-text").text(getTaps());
         return true;
     } else {
         incorrectTap();
@@ -105,18 +120,60 @@ function checkCorrect(smallButton) {
 }
 
 function incorrectTap() {
-    $(".game-text").text("Oops!");
-    $(".subtext").text("Wrong one.");
-    $(".start").text("Restart");
+    $(".game-text").text(cycle.loseMessage[Math.floor(Math.random() * cycle.loseMessage.length)]);
+    $(".subtext").text("Wrong tap.");
+    if (cycle.strictMode === true) {
+        $(".start").text("Restart");
+    } else {
+        $(".start").text("Retry");
+    }
     $(".game-text,.subtext,.start").show();
-
 }
 
 function correctSequence() {
-    $(".game-text").text("Well done.");
-    $(".subtext").text("Thats right!");
-    $(".start").text("Next");
-    $(".game-text,.subtext,.start").show();
+    if (checkMaxLevel()) {
+        $(".game-text").text("Cycle Complete!");
+        $(".subtext").hide();
+        $(".start").text("Restart").show();
+    } else {
+        $(".game-text").text(cycle.winMessage[Math.floor(Math.random() * cycle.winMessage.length)]);
+        $(".subtext").text("Thats right!");
+        $(".start").text("Next");
+        $(".game-text,.subtext,.start").show();
+    }
+    cycle.level++;
+}
+
+function settingsHandler(setting) {
+    if (setting.find("a").text() === "Strict Mode") {
+        if (setting.find("span").hasClass("glyphicon")) {
+            cycle.strictMode = false;
+        } else {
+            cycle.strictMode = true;
+        }
+        setting.find("span").toggleClass("glyphicon glyphicon-ok");
+
+    }
+    if (setting.find("a").text() === "Restart") {
+        restart();
+    }
+}
+
+function restart() {
+    if (!cycle.animating) {
+        cycle.sequence = [];
+        cycle.level = 1;
+        cycle.userTaps = 0;
+        $(".level").text("Cycle the Memory Game");
+        $(".game-text").stop(true, true).text("Welcome");
+        $(".subtext").stop(true, true).text("Tap Start to begin");
+        $(".start").text("Start");
+        $(".game-text,.subtext,.start").show();
+    }
+}
+
+function checkMaxLevel() {
+    return cycle.level === cycle.maxLevels;
 }
 
 $(document).ready(function() {
@@ -129,6 +186,11 @@ $(document).ready(function() {
     $("button").click(function() {
         buttonText = $(this).text();
         buttonHandler(buttonText);
+    });
+    $(".settingsItem").click(function() {
+        setting = $(this);
+        settingsHandler(setting);
+
 
     });
 
