@@ -15,6 +15,7 @@ var cycle = {
     userTaps: 0,
     playing: false,
     strictMode: true,
+    sound: false,
     animating: false,
     maxLevels: 20
 };
@@ -48,9 +49,13 @@ function setSequence(n) {
 }
 
 function highlightButton(button) {
+    if (cycle.sound) {
+        playAudio(button);
+    }
     bgColor = button.css("border-color");
     button.effect("highlight", {
         color: bgColor
+
     }, 900);
 }
 
@@ -154,6 +159,15 @@ function settingsHandler(setting) {
         setting.find("span").toggleClass("glyphicon glyphicon-ok");
 
     }
+    if (setting.find("a").text() === "Sound") {
+        if (setting.find("span").hasClass("glyphicon")) {
+            cycle.sound = false;
+        } else {
+            cycle.sound = true;
+        }
+        setting.find("span").toggleClass("glyphicon glyphicon-ok");
+
+    }
     if (setting.find("a").text() === "Restart") {
         restart();
     }
@@ -174,6 +188,12 @@ function restart() {
 
 function checkMaxLevel() {
     return cycle.level === cycle.maxLevels;
+}
+
+function playAudio(circle) {
+    var note = $(circle).attr("id");
+    var audio = new Audio("./sound/piano_" + note + ".wav");
+    audio.play();
 }
 
 $(document).ready(function() {
