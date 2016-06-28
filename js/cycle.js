@@ -20,8 +20,6 @@ var cycle = {
     maxLevels: 20
 };
 
-
-
 function start() {
     cycle.animating = true;
 
